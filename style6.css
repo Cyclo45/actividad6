@@ -1,0 +1,298 @@
+/* ==========================================================
+   Actividad 6 - Calculadora de IMC - Tema verde esmeralda / lima
+   ========================================================== */
+
+:root {
+  --lime-light: #d8ffe5;
+  --lime: #a3ff4f;
+  --emerald: #10e08a;
+  --teal: #0ea5a0;
+  --bg-dark: #03120d;
+  --bg-card: #05180f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@property --angulo {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ---------- Fondo animado (aurora) ---------- */
+html {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(16, 224, 138, 0.22), transparent 42%),
+    radial-gradient(circle at 85% 80%, rgba(163, 255, 79, 0.15), transparent 42%),
+    radial-gradient(circle at 70% 15%, rgba(14, 165, 160, 0.2), transparent 40%),
+    var(--bg-dark);
+  background-size: 150% 150%, 150% 150%, 150% 150%, auto;
+  animation: aurora 14s ease-in-out infinite alternate;
+}
+
+@keyframes aurora {
+  0%   { background-position: 0% 0%, 100% 100%, 100% 0%, 0 0; }
+  100% { background-position: 100% 100%, 0% 0%, 0% 100%, 0 0; }
+}
+
+/* Hojas/luciérnagas de luz que suben */
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(3px 3px at 50px 70px, var(--lime), transparent),
+    radial-gradient(2px 2px at 160px 150px, var(--emerald), transparent),
+    radial-gradient(4px 4px at 240px 30px, var(--lime-light), transparent),
+    radial-gradient(2.5px 2.5px at 110px 210px, var(--emerald), transparent);
+  background-size: 290px 250px;
+  opacity: 0.5;
+  animation: subir 28s linear infinite;
+}
+
+@keyframes subir {
+  from { background-position: 0 0; }
+  to   { background-position: 0 -750px; }
+}
+
+/* ---------- Tarjeta (el body) con borde animado ---------- */
+body {
+  position: relative;
+  z-index: 1;
+  max-width: 440px;
+  margin: 6vh auto;
+  padding: 38px 32px 32px;
+  font-family: "Segoe UI", "Trebuchet MS", system-ui, sans-serif;
+  color: var(--lime-light);
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background:
+    linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+    conic-gradient(from var(--angulo), var(--emerald), var(--lime), transparent 40%, var(--teal), var(--emerald)) border-box;
+  box-shadow:
+    0 0 40px rgba(16, 224, 138, 0.18),
+    0 25px 60px rgba(0, 0, 0, 0.7);
+  animation: entrar 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both,
+             girarBorde 5s linear infinite,
+             respirar 5s ease-in-out 1s infinite;
+}
+
+@keyframes girarBorde {
+  to { --angulo: 360deg; }
+}
+
+@keyframes entrar {
+  from { opacity: 0; transform: translateY(40px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes respirar {
+  0%, 100% { box-shadow: 0 0 30px rgba(16, 224, 138, 0.15), 0 25px 60px rgba(0, 0, 0, 0.7); }
+  50%      { box-shadow: 0 0 60px rgba(163, 255, 79, 0.35), 0 25px 60px rgba(0, 0, 0, 0.7); }
+}
+
+/* Los divs vacíos del HTML no ocupan espacio */
+div:empty {
+  display: none;
+}
+
+/* ---------- Título ---------- */
+h1 {
+  margin: 0 0 10px;
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: center;
+  background: linear-gradient(90deg, var(--lime-light), var(--lime), var(--emerald), var(--lime-light));
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textoBrillo 5s linear infinite;
+}
+
+@keyframes textoBrillo {
+  from { background-position: 0% 0; }
+  to   { background-position: 250% 0; }
+}
+
+/* ---------- Párrafos ---------- */
+p {
+  margin: 0 0 26px;
+  text-align: center;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: rgba(216, 255, 229, 0.7);
+  animation: aparecer 0.8s ease 0.3s both;
+}
+
+/* ---------- Inputs ---------- */
+input {
+  display: block;
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  font-size: 1.05rem;
+  color: var(--lime-light);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(16, 224, 138, 0.3);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  animation: aparecer 0.7s ease both;
+}
+
+input:nth-of-type(1) { animation-delay: 0.45s; }
+input:nth-of-type(2) { animation-delay: 0.6s; }
+
+input::placeholder {
+  color: rgba(216, 255, 229, 0.4);
+  letter-spacing: 0.04em;
+}
+
+input:hover {
+  border-color: rgba(16, 224, 138, 0.7);
+}
+
+input:focus {
+  border-color: var(--emerald);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 3px rgba(16, 224, 138, 0.18),
+    0 0 22px rgba(16, 224, 138, 0.45);
+}
+
+/* Quita las flechitas del input numérico */
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ---------- Botón ---------- */
+button {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 14px 18px;
+  overflow: hidden;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #02170d;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--lime), var(--emerald) 50%, var(--teal));
+  background-size: 200% 200%;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 6px 22px rgba(16, 224, 138, 0.4);
+  transition: transform 0.25s, box-shadow 0.25s, filter 0.25s;
+  animation: gradienteBoton 5s ease infinite, pulso 2.4s ease-in-out infinite;
+}
+
+@keyframes gradienteBoton {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulso {
+  0%, 100% { box-shadow: 0 6px 22px rgba(16, 224, 138, 0.4); }
+  50%      { box-shadow: 0 6px 38px rgba(163, 255, 79, 0.8); }
+}
+
+/* Destello que cruza el botón */
+button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-20deg);
+  animation: destello 3s ease-in-out infinite;
+}
+
+@keyframes destello {
+  0%, 55% { left: -80%; }
+  100%    { left: 140%; }
+}
+
+button:hover {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.1);
+}
+
+button:active {
+  transform: translateY(0) scale(0.97);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--lime-light);
+  outline-offset: 3px;
+}
+
+/* ---------- Mensaje de resultado ---------- */
+#mensaje {
+  margin: 22px 0 0;
+  padding: 14px 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--lime-light);
+  background: rgba(16, 224, 138, 0.09);
+  border: 1px solid rgba(16, 224, 138, 0.4);
+  border-left: 4px solid var(--emerald);
+  border-radius: 10px;
+  text-shadow: 0 0 10px rgba(16, 224, 138, 0.5);
+  animation: resultadoEntra 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Sin texto, el cuadro no se muestra */
+#mensaje:empty {
+  display: none;
+}
+
+@keyframes resultadoEntra {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  body {
+    margin: 4vh 16px;
+    padding: 30px 22px 26px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Respeta a quien prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
